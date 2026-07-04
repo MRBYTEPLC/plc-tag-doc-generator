@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<RSLogix5000Content SchemaRevision="1.0" SoftwareRevision="32.02" TargetName="TorqueStation_PLC" TargetType="Controller">
+  <Controller Name="TorqueStation_PLC">
+    <DataTypes>
+      <DataType Name="RecipeData" Family="NoFamily" Class="User">
+        <Description><![CDATA[Recipe parameters for the multi-spindle torque station]]></Description>
+        <Members>
+          <Member Name="TargetTorque" DataType="REAL" Dimension="0" Radix="Float" ExternalAccess="Read/Write">
+            <Description><![CDATA[Target torque setpoint, in Nm]]></Description>
+          </Member>
+          <Member Name="TargetAngle" DataType="REAL" Dimension="0" Radix="Float" ExternalAccess="Read/Write">
+            <Description><![CDATA[Target angle setpoint, in degrees]]></Description>
+          </Member>
+          <Member Name="MaxCycleTime" DataType="DINT" Dimension="0" Radix="Decimal" ExternalAccess="Read/Write">
+            <Description><![CDATA[Maximum allowed cycle time, in milliseconds]]></Description>
+          </Member>
+        </Members>
+      </DataType>
+      <DataType Name="StationStatus" Family="NoFamily" Class="User">
+        <Description><![CDATA[Runtime status word for a torque station]]></Description>
+        <Members>
+          <Member Name="CycleActive" DataType="BOOL" Dimension="0" Radix="Decimal" ExternalAccess="Read Only">
+            <Description><![CDATA[True while a torque cycle is running]]></Description>
+          </Member>
+          <Member Name="CycleOK" DataType="BOOL" Dimension="0" Radix="Decimal" ExternalAccess="Read Only">
+            <Description><![CDATA[True if the last cycle passed torque and angle windows]]></Description>
+          </Member>
+          <Member Name="FaultCode" DataType="DINT" Dimension="0" Radix="Decimal" ExternalAccess="Read Only">
+            <Description><![CDATA[Current fault code, 0 = no fault]]></Description>
+          </Member>
+        </Members>
+      </DataType>
+    </DataTypes>
+    <Tags>
+      <Tag Name="Station1_CycleStart" TagType="Base" DataType="BOOL" ExternalAccess="Read/Write">
+        <Description><![CDATA[Operator pushbutton input to start the torque cycle]]></Description>
+      </Tag>
+      <Tag Name="Station1_Recipe" TagType="Base" DataType="RecipeData" ExternalAccess="Read/Write">
+        <Description><![CDATA[Active recipe applied to station 1]]></Description>
+      </Tag>
+      <Tag Name="Station1_Status" TagType="Base" DataType="StationStatus" ExternalAccess="Read Only">
+        <Description><![CDATA[Current runtime status of station 1]]></Description>
+      </Tag>
+      <Tag Name="Station2_CycleStart" TagType="Base" DataType="BOOL" ExternalAccess="Read/Write">
+        <Description><![CDATA[Operator pushbutton input to start the torque cycle]]></Description>
+      </Tag>
+      <Tag Name="Station2_Recipe" TagType="Base" DataType="RecipeData" ExternalAccess="Read/Write">
+        <Description><![CDATA[Active recipe applied to station 2]]></Description>
+      </Tag>
+      <Tag Name="Station2_Status" TagType="Base" DataType="StationStatus" ExternalAccess="Read Only">
+        <Description><![CDATA[Current runtime status of station 2]]></Description>
+      </Tag>
+      <Tag Name="Line_EStop" TagType="Base" DataType="BOOL" ExternalAccess="Read Only">
+        <Description><![CDATA[Hardwired emergency stop input, normally closed]]></Description>
+      </Tag>
+      <Tag Name="Line_PartsCounter" TagType="Base" DataType="DINT" ExternalAccess="Read/Write">
+        <Description><![CDATA[Total good parts produced on this shift]]></Description>
+      </Tag>
+    </Tags>
+    <Programs>
+      <Program Name="MainProgram">
+        <Routines>
+          <Routine Name="MainRoutine" Type="RLL">
+            <Description><![CDATA[Top-level scan routine, calls all subroutines]]></Description>
+          </Routine>
+          <Routine Name="Station1_Sequence" Type="RLL">
+            <Description><![CDATA[Torque and angle sequence logic for station 1]]></Description>
+          </Routine>
+          <Routine Name="Station2_Sequence" Type="RLL">
+            <Description><![CDATA[Torque and angle sequence logic for station 2]]></Description>
+          </Routine>
+          <Routine Name="FaultHandling" Type="RLL">
+            <Description><![CDATA[Centralized fault detection and annunciation logic]]></Description>
+          </Routine>
+          <Routine Name="PartsCounting" Type="ST">
+            <Description><![CDATA[Structured text routine that increments the shift parts counter]]></Description>
+          </Routine>
+        </Routines>
+      </Program>
+    </Programs>
+  </Controller>
+</RSLogix5000Content>
