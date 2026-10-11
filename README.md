@@ -95,3 +95,5 @@ python main.py
 ## License
 
 MIT — see [LICENSE](LICENSE).
+* **Liability & Safety Disclaimer:** This software and its documentation are provided "as is" for educational and informational purposes only. Industrial automation involving live machinery carries inherent risks of property damage, production downtime, physical injury, or loss of life. The creators, contributors, and maintainers of this repository assume absolutely no responsibility or liability for any errors, malfunctioning, damages, or financial losses resulting from the use or misuse of this code. Any implementation on a live production floor is done completely at the user's own risk, and the final engineer or technician deploying this system is solely responsible for verifying its safety, accuracy, and compliance with local industrial regulations.*
+
